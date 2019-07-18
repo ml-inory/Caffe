@@ -1,0 +1,195 @@
+
+name: "CIFAR10_niubi"
+layer {
+  name: "data"
+  type: "Input"
+  top: "data"
+  input_param { shape: { dim: 1 dim: 3 dim: 32 dim: 32 } }
+}
+layer {
+  name: "conv1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 32
+    pad: 2
+    kernel_size: 5
+    stride: 1
+  }
+}
+layer {
+  name: "relu1"
+  type: "ReLU"
+  bottom: "conv1"
+  top: "conv1"
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "flat1"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "flat1"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 1
+    pad: 0
+    kernel_size: 1
+    stride: 1
+  }
+}
+layer {
+  name: "relu_flat1"
+  type: "ReLU"
+  bottom: "flat1"
+  top: "flat1"
+}
+layer {
+  name: "conv2"
+  type: "Convolution"
+  bottom: "flat1"
+  top: "conv2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 32
+    pad: 2
+    kernel_size: 5
+    stride: 1
+  }
+}
+layer {
+  name: "relu2"
+  type: "ReLU"
+  bottom: "conv2"
+  top: "conv2"
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "flat2"
+  type: "Convolution"
+  bottom: "pool2"
+  top: "flat2"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 1
+    pad: 0
+    kernel_size: 1
+    stride: 1
+  }
+}
+layer {
+  name: "relu_flat2"
+  type: "ReLU"
+  bottom: "flat2"
+  top: "flat2"
+}
+layer {
+  name: "conv3"
+  type: "Convolution"
+  bottom: "flat2"
+  top: "conv3"
+  convolution_param {
+    num_output: 64
+    pad: 2
+    kernel_size: 5
+    stride: 1
+  }
+}
+layer {
+  name: "relu3"
+  type: "ReLU"
+  bottom: "conv3"
+  top: "conv3"
+}
+layer {
+  name: "pool3"
+  type: "Pooling"
+  bottom: "conv3"
+  top: "pool3"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "flat3"
+  type: "Convolution"
+  bottom: "pool3"
+  top: "flat3"
+  param {
+    lr_mult: 1
+  }
+  param {
+    lr_mult: 2
+  }
+  convolution_param {
+    num_output: 10
+    pad: 0
+    kernel_size: 1
+    stride: 1
+  }
+}
+layer {
+  name: "relu_flat3"
+  type: "ReLU"
+  bottom: "flat3"
+  top: "flat3"
+}
+layer {
+  name: "pool4"
+  type: "Pooling"
+  bottom: "flat3"
+  top: "pool4"
+  pooling_param {
+    global_pooling: true
+    pool: AVE
+  }
+}
+layer {
+  name: "prob"
+  type: "Softmax"
+  bottom: "pool4"
+  top: "prob"
+}
