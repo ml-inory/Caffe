@@ -155,7 +155,7 @@ static bool matchExt(const std::string & fn,
   return false;
 }
 
-bool ReadImageToDatum(const string& filename, const int label,
+bool ReadImageToDatum(const string& filename, const vector<int>& label,
     const int height, const int width, const int min_dim, const int max_dim,
     const bool is_color, const std::string & encoding, Datum* datum) {
   cv::Mat cv_img = ReadImageToCVMat(filename, height, width, min_dim, max_dim,
@@ -170,11 +170,22 @@ bool ReadImageToDatum(const string& filename, const int label,
         return ReadFileToDatum(filename, label, datum);
       }
       EncodeCVMatToDatum(cv_img, encoding, datum);
-      datum->set_label(label);
+      // datum->set_label(label);
+      datum->mutable_label()->Clear();
+      for (int label_i = 0; label_i < label.size(); label_i++)
+      {
+        datum->add_label(label[label_i]);
+      }
       return true;
     }
     CVMatToDatum(cv_img, datum);
-    datum->set_label(label);
+    // datum->set_label(label);
+    datum->mutable_label()->Clear();
+    for (int label_i = 0; label_i < label.size(); label_i++)
+    {
+      datum->add_label(label[label_i]);
+    }
+    
     return true;
   } else {
     return false;
@@ -198,7 +209,8 @@ bool ReadRichImageToAnnotatedDatum(const string& filename,
     const string& labeltype, const std::map<string, int>& name_to_label,
     AnnotatedDatum* anno_datum) {
   // Read image to datum.
-  bool status = ReadImageToDatum(filename, -1, height, width,
+  vector<int> labels;
+  bool status = ReadImageToDatum(filename, labels, height, width,
                                  min_dim, max_dim, is_color, encoding,
                                  anno_datum->mutable_datum());
   if (status == false) {
@@ -234,7 +246,7 @@ bool ReadRichImageToAnnotatedDatum(const string& filename,
 
 #endif  // USE_OPENCV
 
-bool ReadFileToDatum(const string& filename, const int label,
+bool ReadFileToDatum(const string& filename, const vector<int>& label,
     Datum* datum) {
   std::streampos size;
 
@@ -246,7 +258,12 @@ bool ReadFileToDatum(const string& filename, const int label,
     file.read(&buffer[0], size);
     file.close();
     datum->set_data(buffer);
-    datum->set_label(label);
+    // datum->set_label(label);
+    datum->mutable_label()->Clear();
+    for (int label_i = 0; label_i < label.size(); label_i++)
+    {
+      datum->add_label(label[label_i]);
+    }
     datum->set_encoded(true);
     return true;
   } else {

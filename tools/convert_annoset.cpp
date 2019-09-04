@@ -157,7 +157,9 @@ int main(int argc, char** argv) {
     filename = root_folder + lines[line_id].first;
     if (anno_type == "classification") {
       label = boost::get<int>(lines[line_id].second);
-      status = ReadImageToDatum(filename, label, resize_height, resize_width,
+      std::vector<int> labels(1);
+      labels[0] = label;
+      status = ReadImageToDatum(filename, labels, resize_height, resize_width,
           min_dim, max_dim, is_color, enc, datum);
     } else if (anno_type == "detection") {
       labelname = root_folder + boost::get<std::string>(lines[line_id].second);

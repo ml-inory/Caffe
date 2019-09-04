@@ -361,7 +361,7 @@ void DataTransformer<Dtype>::CropImage(const Datum& datum,
     CropImage(cv_img, bbox, &crop_img);
     // Save the image into datum.
     EncodeCVMatToDatum(crop_img, "jpg", crop_datum);
-    crop_datum->set_label(datum.label());
+    crop_datum->mutable_label()->CopyFrom(datum.label());
     return;
 #else
     LOG(FATAL) << "Encoded datum requires OpenCV; compile with USE_OPENCV.";
@@ -390,7 +390,7 @@ void DataTransformer<Dtype>::CropImage(const Datum& datum,
   crop_datum->set_channels(datum_channels);
   crop_datum->set_height(height);
   crop_datum->set_width(width);
-  crop_datum->set_label(datum.label());
+  crop_datum->mutable_label()->CopyFrom(datum.label());
   crop_datum->clear_data();
   crop_datum->clear_float_data();
   crop_datum->set_encoded(false);
@@ -448,7 +448,7 @@ void DataTransformer<Dtype>::ExpandImage(const Datum& datum,
     ExpandImage(cv_img, expand_ratio, expand_bbox, &expand_img);
     // Save the image into datum.
     EncodeCVMatToDatum(expand_img, "jpg", expand_datum);
-    expand_datum->set_label(datum.label());
+    expand_datum->mutable_label()->CopyFrom(datum.label());
     return;
 #else
     LOG(FATAL) << "Encoded datum requires OpenCV; compile with USE_OPENCV.";
@@ -480,7 +480,7 @@ void DataTransformer<Dtype>::ExpandImage(const Datum& datum,
   expand_datum->set_channels(datum_channels);
   expand_datum->set_height(height);
   expand_datum->set_width(width);
-  expand_datum->set_label(datum.label());
+  expand_datum->mutable_label()->CopyFrom(datum.label());
   expand_datum->clear_data();
   expand_datum->clear_float_data();
   expand_datum->set_encoded(false);
@@ -558,7 +558,7 @@ void DataTransformer<Dtype>::DistortImage(const Datum& datum,
     cv::Mat distort_img = ApplyDistort(cv_img, param_.distort_param());
     // Save the image into datum.
     EncodeCVMatToDatum(distort_img, "jpg", distort_datum);
-    distort_datum->set_label(datum.label());
+    distort_datum->mutable_label()->CopyFrom(datum.label());
     return;
 #else
     LOG(FATAL) << "Encoded datum requires OpenCV; compile with USE_OPENCV.";

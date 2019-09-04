@@ -240,8 +240,9 @@ void AnnotatedDataLayer<Dtype>::load_batch(Batch<Dtype>* batch) {
         this->data_transformer_->Transform(sampled_datum->datum(),
                                            &(this->transformed_data_));
         // Otherwise, store the label from datum.
-        CHECK(sampled_datum->datum().has_label()) << "Cannot find any label.";
-        top_label[item_id] = sampled_datum->datum().label();
+        CHECK(sampled_datum->datum().label().size()) << "Cannot find any label.";
+        for (int label_i = 0; label_i < sampled_datum->datum().label().size(); label_i++)
+          top_label[item_id] = sampled_datum->datum().label(label_i);
       }
     } else {
       this->data_transformer_->Transform(sampled_datum->datum(),

@@ -123,59 +123,60 @@ inline void WriteProtoToBinaryFile(
   WriteProtoToBinaryFile(proto, filename.c_str());
 }
 
-bool ReadFileToDatum(const string& filename, const int label, Datum* datum);
+bool ReadFileToDatum(const string& filename, const vector<int>& label, Datum* datum);
 
 inline bool ReadFileToDatum(const string& filename, Datum* datum) {
-  return ReadFileToDatum(filename, -1, datum);
+  vector<int> label;
+  return ReadFileToDatum(filename, label, datum);
 }
 
-bool ReadImageToDatum(const string& filename, const int label,
+bool ReadImageToDatum(const string& filename, const vector<int>& label,
     const int height, const int width, const int min_dim, const int max_dim,
     const bool is_color, const std::string & encoding, Datum* datum);
 
-inline bool ReadImageToDatum(const string& filename, const int label,
+inline bool ReadImageToDatum(const string& filename, const vector<int>& label,
     const int height, const int width, const int min_dim, const int max_dim,
     const bool is_color, Datum* datum) {
   return ReadImageToDatum(filename, label, height, width, min_dim, max_dim,
                           is_color, "", datum);
 }
 
-inline bool ReadImageToDatum(const string& filename, const int label,
+inline bool ReadImageToDatum(const string& filename, const vector<int>& label,
     const int height, const int width, const int min_dim, const int max_dim,
     Datum* datum) {
   return ReadImageToDatum(filename, label, height, width, min_dim, max_dim,
                           true, datum);
 }
 
-inline bool ReadImageToDatum(const string& filename, const int label,
+inline bool ReadImageToDatum(const string& filename, const vector<int>& label,
     const int height, const int width, const bool is_color,
     const std::string & encoding, Datum* datum) {
   return ReadImageToDatum(filename, label, height, width, 0, 0, is_color,
                           encoding, datum);
 }
 
-inline bool ReadImageToDatum(const string& filename, const int label,
+inline bool ReadImageToDatum(const string& filename, const vector<int>& label,
     const int height, const int width, const bool is_color, Datum* datum) {
   return ReadImageToDatum(filename, label, height, width, is_color,
                           "", datum);
 }
 
-inline bool ReadImageToDatum(const string& filename, const int label,
+inline bool ReadImageToDatum(const string& filename, const vector<int>& label,
     const int height, const int width, Datum* datum) {
   return ReadImageToDatum(filename, label, height, width, true, datum);
 }
 
-inline bool ReadImageToDatum(const string& filename, const int label,
+inline bool ReadImageToDatum(const string& filename, const vector<int>& label,
     const bool is_color, Datum* datum) {
   return ReadImageToDatum(filename, label, 0, 0, is_color, datum);
 }
 
-inline bool ReadImageToDatum(const string& filename, const int label,
+inline bool ReadImageToDatum(const string& filename, const vector<int>& label,
     Datum* datum) {
   return ReadImageToDatum(filename, label, 0, 0, true, datum);
 }
 
-inline bool ReadImageToDatum(const string& filename, const int label,
+inline bool ReadImageToDatum(const string& filename, const vector<int>& label,
     const std::string & encoding, Datum* datum) {
   return ReadImageToDatum(filename, label, 0, 0, true, encoding, datum);
 }
